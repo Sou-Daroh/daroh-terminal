@@ -572,7 +572,7 @@ export function Globe({ onExit }: { onExit?: () => void }) {
   );
 
   return (
-    <div className="flex flex-row items-center justify-center py-20 h-screen md:h-auto dark:bg-black bg-white relative w-full">
+    <div className="flex flex-row items-center justify-center py-4 md:py-20 h-screen dark:bg-black bg-white relative w-full">
       <button
         onClick={onExit}
         className="absolute top-4 right-4 text-green-400 bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold z-50 hover:bg-opacity-75 hover:text-red-400 transition-colors"
@@ -595,15 +595,15 @@ export function Globe({ onExit }: { onExit?: () => void }) {
           }}
           className="div"
         >
-          <h2 className="text-center text-xl md:text-4xl font-bold text-black dark:text-white">
+          <h2 className="text-center text-lg md:text-4xl font-bold text-black dark:text-white">
             Global Tech Networks
           </h2>
-          <p className="text-center text-base md:text-lg font-normal text-neutral-700 dark:text-neutral-200 max-w-md mt-2 mx-auto">
+          <p className="text-center text-sm md:text-lg font-normal text-neutral-700 dark:text-neutral-200 max-w-md mt-1 md:mt-2 mx-auto">
             A world full of potential.
           </p>
         </motion.div>
-        <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black to-white z-40" />
-        <div className="absolute w-full -bottom-20 h-72 md:h-full z-10">
+        <div className="absolute w-full bottom-0 inset-x-0 h-20 md:h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black to-white z-40" />
+        <div className="absolute w-full top-16 md:-bottom-20 h-[calc(100vh-8rem)] md:h-full z-10">
           <World data={sampleArcs} globeConfig={globeConfig} />
         </div>
       </div>
