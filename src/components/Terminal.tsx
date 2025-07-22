@@ -39,7 +39,16 @@ interface FastfetchData {
   };
 }
 
-type HistoryItem = string | FastfetchData;
+interface ContactData {
+  type: "contact";
+  data: {
+    email: string;
+    github: string;
+    linkedin: string;
+  };
+}
+
+type HistoryItem = string | FastfetchData | ContactData;
 
 const CommandButton = ({ command, onClick }: { command: Command; onClick: (cmd: string) => void }) => (
   <button
@@ -66,6 +75,28 @@ const TerminalHeader = ({ executeCommand }: { executeCommand: (cmd: string) => v
   </div>
 );
 
+const ContactLink = ({
+  icon,
+  href,
+  text,
+  className,
+}: {
+  icon: React.ReactNode;
+  href: string;
+  text: string;
+  className?: string;
+}) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className={`inline-flex items-center ${className}`}
+  >
+    {icon}
+    <span className="ml-2">{text}</span>
+  </a>
+);
+
 const HistoryLine = ({ line }: { line: HistoryItem }) => {
   if (typeof line === "string") {
     return <TerminalOutput html={line} />;
@@ -83,28 +114,6 @@ const HistoryLine = ({ line }: { line: HistoryItem }) => {
           .map(line => line.replace(/ /g, '&nbsp;'))
           .join('<br>')
           .replace('class="text-green-400"', 'class="text-primary"');
-
-        const ContactLink = ({
-          icon,
-          href,
-          text,
-          className,
-        }: {
-          icon: React.ReactNode;
-          href: string;
-          text: string;
-          className?: string;
-        }) => (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`flex items-center ${className}`}
-          >
-            {icon}
-            <span className="ml-2">{text}</span>
-          </a>
-        );
 
         return (
           <div className="flex flex-col md:flex-row">
@@ -157,6 +166,42 @@ const HistoryLine = ({ line }: { line: HistoryItem }) => {
                     className="text-blue-300 hover:text-blue-100 break-all"
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+        );
+      case "contact":
+        const { email, github, linkedin } = line.data;
+        
+        return (
+          <div className="py-2">
+            <div>
+              <span className="text-green-400 font-bold">Contact Information</span>
+            </div>
+            <div className="mt-2 space-y-2">
+              <div>
+                <ContactLink
+                  icon={<FaEnvelope size={16} className="text-red-400" />}
+                  href={`mailto:${email}`}
+                  text={email}
+                  className="text-yellow-300 hover:text-yellow-100"
+                />
+              </div>
+              <div>
+                <ContactLink
+                  icon={<FaGithub size={16}/>}
+                  href={`https://github.com/${github}`}
+                  text={`github.com/${github}`}
+                  className="text-white-300 hover:text-green-100"
+                />
+              </div>
+              <div>
+                <ContactLink
+                  icon={<FaLinkedin size={16} className="text-blue-400" />}
+                  href={`https://linkedin.com/in/${linkedin}`}
+                  text={`linkedin.com/in/${linkedin}`}
+                  className="text-blue-300 hover:text-blue-100"
+                />
               </div>
             </div>
           </div>
@@ -241,6 +286,14 @@ const Terminal = () => {
     }
   }, [history, isTyping, terminalRef]);
 
+  if (showGlobe) {
+    return (
+      <Suspense fallback={null}>
+        <Globe onExit={() => setShowGlobe(false)} />
+      </Suspense>
+    );
+  }
+
   return (
     <div className="w-full h-full bg-black shadow-lg flex flex-col terminal">
       <TerminalHeader executeCommand={executeCommand} />
@@ -259,9 +312,6 @@ const Terminal = () => {
           onInputKeyDown={handleInputKeyDown}
         />
       </div>
-      <Suspense fallback={null}>
-        <Globe isOpen={showGlobe} onClose={() => setShowGlobe(false)} />
-      </Suspense>
     </div>
   );
 };

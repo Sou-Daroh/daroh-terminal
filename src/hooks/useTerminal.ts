@@ -36,8 +36,17 @@ interface FastfetchData {
   };
 }
 
-type HistoryItem = string | FastfetchData;
-type CommandOutput = string | FastfetchData;
+interface ContactData {
+  type: "contact";
+  data: {
+    email: string;
+    github: string;
+    linkedin: string;
+  };
+}
+
+type HistoryItem = string | FastfetchData | ContactData;
+type CommandOutput = string | FastfetchData | ContactData;
 type CommandHandler = (args: string[]) => CommandOutput;
 
 interface UserAgentData {
@@ -192,6 +201,10 @@ export const useTerminal = () => {
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [isTyping, setIsTyping] = useState(false);
+  const isTypingRef = useRef(isTyping);
+  useEffect(() => {
+    isTypingRef.current = isTyping;
+  }, [isTyping]);
   const [showGlobe, setShowGlobe] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
   const typingInterruptRef = useRef(false);
@@ -293,10 +306,13 @@ export const useTerminal = () => {
       },
       experience: () => portfolioData.experience,
       education: () => portfolioData.education,
-      contact: () => portfolioData.contact,
-      "launch globe": () => {
+      contact: (): ContactData => ({
+        type: "contact",
+        data: portfolioData.fastfetch.contact
+      }),
+      globe: () => {
         setShowGlobe(true);
-        return "Launching globe viewer... Type 'exit' to close, or use the close button.";
+        return "Launching globe... Please use 'exit' to return to the terminal.";
       },
       sudo: () => `<span class="text-red">Permission denied.</span> Nice try though! 😄`,
       echo: (args) => {
@@ -314,14 +330,10 @@ export const useTerminal = () => {
       date: () => new Date().toString(),
       whoami: () => "daroh@terminal",
       clear: () => {
-        setHistory([]);
-        return "";
-      },
-      exit: () => {
         if (showGlobe) {
-          setShowGlobe(false);
-          return "Closing globe viewer...";
+          return "Cannot clear the terminal while the globe is active. Use 'exit' to return.";
         }
+        setHistory([]);
         return "";
       },
     }),
@@ -372,16 +384,30 @@ export const useTerminal = () => {
 
         for (let i = 0; i < output.length; i++) {
             if (typingInterruptRef.current) {
-                setHistory(prevHistory => [...prevHistory, '']);
+                setHistory(prevHistory => {
+                    const newHistory = [...prevHistory];
+                    const lastLine = newHistory[newHistory.length-1];
+                    if (typeof lastLine === 'string') {
+                        newHistory[newHistory.length-1] = lastLine + '<span class="text-red-400">^C</span>';
+                    }
+                    newHistory.push('');
+                    return newHistory;
+                });
                 setIsTyping(false);
                 return;
             }
 
             const tagMatch = output.substring(i).match(/^<[^>]+>/);
+            const entityMatch = output.substring(i).match(/^&[a-zA-Z0-9#]+;/);
+
             if (tagMatch) {
                 const tag = tagMatch[0];
                 typedOutput += tag;
                 i += tag.length - 1;
+            } else if (entityMatch) {
+                const entity = entityMatch[0];
+                typedOutput += entity;
+                i += entity.length - 1;
             } else {
                 typedOutput += output[i];
             }
@@ -536,16 +562,29 @@ export const useTerminal = () => {
       for (let i = 0; i < welcomeMessage.length; i++) {
        
         if (typingInterruptRef.current) {
-          setHistory((prevHistory) => [...prevHistory, ""]);
-          setIsTyping(false);
-          return;
+            setHistory((prevHistory) => {
+                const newHistory = [...prevHistory];
+                const lastLine = newHistory[newHistory.length-1];
+                if (typeof lastLine === 'string') {
+                    newHistory[newHistory.length-1] = lastLine + '<span class="text-red-400">^C</span>';
+                }
+                newHistory.push('');
+                return newHistory;
+            });
+            setIsTyping(false);
+            return;
         }
 
         const tagMatch = welcomeMessage.substring(i).match(/^<[^>]+>/);
+        const entityMatch = welcomeMessage.substring(i).match(/^&[a-zA-Z0-9#]+;/);
         if (tagMatch) {
           const tag = tagMatch[0];
           typedOutput += tag;
           i += tag.length - 1;
+        } else if (entityMatch) {
+          const entity = entityMatch[0];
+          typedOutput += entity;
+          i += entity.length - 1;
         } else {
           typedOutput += welcomeMessage[i];
         }
@@ -570,6 +609,25 @@ export const useTerminal = () => {
     return () => {
     };
   }, [promptLine1, promptLine2]);
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (
+        isTypingRef.current &&
+        (e.ctrlKey || e.metaKey) &&
+        (e.key.toLowerCase() === "c")
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        typingInterruptRef.current = true;
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     if (terminalRef.current) {
