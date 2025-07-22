@@ -8,7 +8,7 @@ import { commandList } from "@/config/commands";
 import { Command } from "@/config/commands";
 import TerminalOutput from "./TerminalOutput";
 
-const Globe = dynamic(() => import("./Globe"));
+const Globe = dynamic(() => import("./ui/Globe"), { ssr: false });
 
 interface FastfetchData {
   type: "fastfetch";
