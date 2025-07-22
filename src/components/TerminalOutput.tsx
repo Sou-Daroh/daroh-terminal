@@ -22,7 +22,7 @@ const sanitizeHtml = (html: string): string => {
   // Client-side: Use DOMPurify if available
   if (typeof window !== 'undefined' && DOMPurify.isSupported) {
     return DOMPurify.sanitize(html, {
-      ALLOWED_TAGS: ['span', 'br', 'div', 'a', 'strong', 'em'],
+      ALLOWED_TAGS: ['span', 'br', 'div', 'a', 'strong', 'em', 'i'],
       ALLOWED_ATTR: ['class', 'href', 'target', 'rel'],
       ALLOW_DATA_ATTR: false
     });
@@ -30,7 +30,7 @@ const sanitizeHtml = (html: string): string => {
   
   // Server-side or fallback: Only allow safe, pre-approved HTML patterns
   // This is a whitelist approach for trusted terminal content
-  const safeTags = /^<\/(span|br|div|a|strong|em)>$|^<(span|br|div|a|strong|em)(\s+class="[^"]*"|\s+href="[^"]*"|\s+target="_blank"|\s+rel="noopener noreferrer")*\s*\/?>$/;
+  const safeTags = /^<\/(span|br|div|a|strong|em|i)>$|^<(span|br|div|a|strong|em|i)(\s+class="[^"]*"|\s+href="[^"]*"|\s+target="_blank"|\s+rel="noopener noreferrer")*\s*\/?>$/;
   
   // Split by < and > to check each potential tag
   const parts = html.split(/(<[^>]*>)/);

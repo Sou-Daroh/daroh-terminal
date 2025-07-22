@@ -15,12 +15,12 @@ export const commands: { [key: string]: Command } = {
   education: { name: "education", description: "See my education background", isDisplayed: true },
   contact: { name: "contact", description: "Get my contact information", isDisplayed: true },
   clear: { name: "clear", description: "Clear the terminal", isDisplayed: true },
-  "launch globe": { name: "launch globe", description: "Launch 3D globe viewer", isDisplayed: true },
+  globe: { name: "globe", description: "Launch interactive 3D globe", isDisplayed: true },
+  exit: { name: "exit", description: "Exit the current view (e.g., globe)", isDisplayed: false },
   sudo: { name: "sudo", description: "Try to get root access (just for fun)", isDisplayed: false },
   echo: { name: "echo", description: "Echo back your text", isDisplayed: false },
   date: { name: "date", description: "Show current date and time", isDisplayed: false },
   whoami: { name: "whoami", description: "Display current user", isDisplayed: false },
-  exit: { name: "exit", description: "Exit the current context (e.g., globe viewer)", isDisplayed: false },
 };
 
 export const commandList = Object.values(commands).filter(cmd => cmd.isDisplayed); 
