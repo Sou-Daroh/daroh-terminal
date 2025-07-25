@@ -306,10 +306,27 @@ export const useTerminal = () => {
       },
       experience: () => portfolioData.experience,
       education: () => portfolioData.education,
-      contact: (): ContactData => ({
-        type: "contact",
-        data: portfolioData.fastfetch.contact
-      }),
+      contact: () => {
+        const { email, github, linkedin } = portfolioData.fastfetch.contact;
+        return `
+          <span class="text-green-400 font-bold">Contact Information</span><br><br>
+          <a href="mailto:${email}" class="text-yellow-300 hover:text-yellow-100" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5em;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f87171" viewBox="0 0 16 16" style="vertical-align:middle;"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.143l-6.57-4.027L8 9.586l-1.239-.757ZM16 4.697l-5.803 3.546L16 11.801V4.697Z"/></svg>
+            ${email}
+          </a><br>
+          <a href="https://github.com/${github}" class="text-white-300 hover:text-green-100" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5em;">
+            <svg width="16" height="16" fill="#fff" viewBox="0 0 16 16" style="vertical-align:middle;color:#fff;"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+            github.com/${github}
+          </a><br>
+          <a href="https://linkedin.com/in/${linkedin}" class="text-blue-300 hover:text-blue-100" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5em;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 448" style="vertical-align:middle;">
+              <rect width="448" height="448" rx="64" fill="#0A66C2"/>
+              <path d="M100.28 150.64h60.84v195.82h-60.84zM130.7 75.85c19.43 0 35.17 15.75 35.17 35.17s-15.74 35.17-35.17 35.17-35.17-15.75-35.17-35.17 15.74-35.17 35.17-35.17zm69.43 74.79h58.34v26.77h.83c8.12-15.38 27.98-31.59 57.57-31.59 61.56 0 72.93 40.52 72.93 93.21v107.43h-60.62V251.8c0-22.68-.43-51.83-31.59-51.83-31.63 0-36.45 24.69-36.45 50.18v96.31h-60.41V150.64z" fill="#fff"/>
+            </svg>
+            linkedin.com/in/${linkedin}
+          </a>
+        `;
+      },
       globe: () => {
         setShowGlobe(true);
         return "Launching globe... Please use 'exit' to return to the terminal.";
