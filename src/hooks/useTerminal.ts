@@ -319,10 +319,7 @@ export const useTerminal = () => {
             github.com/${github}
           </a><br>
           <a href="https://linkedin.com/in/${linkedin}" class="text-blue-300 hover:text-blue-100" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5em;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 448" style="vertical-align:middle;">
-              <rect width="448" height="448" rx="64" fill="#0A66C2"/>
-              <path d="M100.28 150.64h60.84v195.82h-60.84zM130.7 75.85c19.43 0 35.17 15.75 35.17 35.17s-15.74 35.17-35.17 35.17-35.17-15.75-35.17-35.17 15.74-35.17 35.17-35.17zm69.43 74.79h58.34v26.77h.83c8.12-15.38 27.98-31.59 57.57-31.59 61.56 0 72.93 40.52 72.93 93.21v107.43h-60.62V251.8c0-22.68-.43-51.83-31.59-51.83-31.63 0-36.45 24.69-36.45 50.18v96.31h-60.41V150.64z" fill="#fff"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 448" style="vertical-align:middle;"><rect width="448" height="448" rx="64" fill="#0A66C2"/><path d="M100.28 150.64h60.84v195.82h-60.84zM130.7 75.85c19.43 0 35.17 15.75 35.17 35.17s-15.74 35.17-35.17 35.17-35.17-15.75-35.17-35.17 15.74-35.17 35.17-35.17zm69.43 74.79h58.34v26.77h.83c8.12-15.38 27.98-31.59 57.57-31.59 61.56 0 72.93 40.52 72.93 93.21v107.43h-60.62V251.8c0-22.68-.43-51.83-31.59-51.83-31.63 0-36.45 24.69-36.45 50.18v96.31h-60.41V150.64z" fill="#fff"/></svg>
             linkedin.com/in/${linkedin}
           </a>
         `;
