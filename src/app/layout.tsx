@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Daroh Sou",
-  description: "Interactive portfolio.",
+  description: "Portfolio of Sou Daroh"
 };
 
 export const viewport: Viewport = {

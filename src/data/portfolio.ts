@@ -1,7 +1,7 @@
 export const portfolioData = {
   about: `
-    My name is Daroh. I'm a passionate full-stack developer with expertise in technologies.<br><br>
-    Type 'skills' to see my technical skills or 'projects' to view my work.
+    My name is Daroh. I'm a Software Engineering Student at with a passion for building innovative solutions of hardware and software.<br><br>
+    Type 'skills' to see my technical expertise or 'projects' to explore my work.
   `,
   skills: [
     { category: 'Languages', items: 'JavaScript, TypeScript, Python, Java' },
@@ -108,7 +108,7 @@ export const portfolioData = {
   `,
   fastfetch: {
     name: "daroh",
-    title: "Software Engineer",
+    title: "Software Engineering Student",
     os: "terminal",
     shell: "zsh",
     packages: "npm",
