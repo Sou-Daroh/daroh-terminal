@@ -324,14 +324,14 @@ export const useTerminal = () => {
           </a>
         `;
       },
-      resume: () => {
-        const resumeUrl = "https://drive.google.com/file/d/1p9je5yfnz4DqyeKPUJ5y9TOCWEWGTMXq/view?usp=sharing";
+      cv: () => {
+        const cvUrl = "https://drive.google.com/file/d/1A8riu1ClQ9ruwFmsQWhWaX3x5ELdyRrs/view?usp=sharing";
         return `
-          <span class="text-yellow-400">Click the link below to view my resume:</span><br>
-          <a href="${resumeUrl}" class="text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">
-            📄 Daroh_Sou_Resume.pdf
+          <span class="text-yellow-400">Click the link below to view my CV:</span><br>
+          <a href="${cvUrl}" class="text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">
+            📄 Daroh_Sou_CV.pdf
           </a><br><br>
-          <span class="text-gray-400">The resume will open in a new tab when you click the link.</span>
+          <span class="text-gray-400">The CV will open in a new tab when you click the link.</span>
         `;
       },
       globe: () => {
