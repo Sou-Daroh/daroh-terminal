@@ -324,6 +324,16 @@ export const useTerminal = () => {
           </a>
         `;
       },
+      resume: () => {
+        const resumeUrl = "https://drive.google.com/file/d/1p9je5yfnz4DqyeKPUJ5y9TOCWEWGTMXq/view?usp=sharing";
+        return `
+          <span class="text-yellow-400">Click the link below to view my resume:</span><br>
+          <a href="${resumeUrl}" class="text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">
+            📄 Daroh_Sou_Resume.pdf
+          </a><br><br>
+          <span class="text-gray-400">The resume will open in a new tab when you click the link.</span>
+        `;
+      },
       globe: () => {
         setShowGlobe(true);
         return "Launching globe... Please use 'exit' to return to the terminal.";

@@ -14,6 +14,7 @@ export const commands: { [key: string]: Command } = {
   experience: { name: "experience", description: "View my work experience", isDisplayed: true },
   education: { name: "education", description: "See my education background", isDisplayed: true },
   contact: { name: "contact", description: "Get my contact information", isDisplayed: true },
+  resume: { name: "resume", description: "Download my resume", isDisplayed: true },
   clear: { name: "clear", description: "Clear the terminal", isDisplayed: true },
   globe: { name: "globe", description: "Launch interactive 3D globe", isDisplayed: true },
   exit: { name: "exit", description: "Exit the current view (e.g., globe)", isDisplayed: false },
