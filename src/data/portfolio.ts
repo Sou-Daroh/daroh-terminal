@@ -52,7 +52,7 @@ export const portfolioData = {
   `,
   education: `
     <span class="text-green-400">Education</span><br>
-    <span class="text-yellow-400">Bachelor of Science in Software Engineering</span><br>
+    <span class="text-yellow-400">Bachelor of Engineering in Software Engineering</span><br>
     Kirirom Institute of Technology, Feb 2023 - Feb 2027
   `,
   projects: [
