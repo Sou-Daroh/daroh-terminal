@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.0",
     "@react-three/drei": "^10.5.1",
     "@react-three/fiber": "^9.2.0",
     "@react-three/rapier": "^2.1.0",
