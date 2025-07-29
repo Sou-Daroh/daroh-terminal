@@ -42,21 +42,12 @@ export const metadata: Metadata = {
     siteName: "Daroh Sou Portfolio",
     title: "Daroh Sou - Portfolio",
     description: "Portfolio of Sou Daroh - Software Developer and Creative Technologist",
-    images: [
-      {
-        url: "/profile-photo.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Daroh Sou - Software Developer Portfolio",
-      },
-    ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Daroh Sou - Portfolio",
     description: "Portfolio of Sou Daroh - Software Developer and Creative Technologist",
-    images: ["/profile-photo.jpg"],
-    creator: "@daroh", // Replace with your actual Twitter handle
+    creator: "@daroh",
   },
   other: {
     "theme-color": "#000000",
