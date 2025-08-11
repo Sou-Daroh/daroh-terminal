@@ -5,7 +5,7 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 ## ✨ Features
 
 - **Interactive Terminal**: Navigate through my portfolio using familiar terminal commands
-- **3D Globe Viewer**: Launch an interactive 3D globe with `launch globe`
+- **3D Globe Viewer**: Launch an interactive 3D globe with `globe`
 - **Real-time Status Bar**: Shows current date, time, and system information
 - **Responsive Design**: Optimized for both desktop and mobile experiences
 - **Multiple Commands**: Explore different sections with intuitive commands
@@ -22,24 +22,31 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 | `experience` | See my work experience and internships |
 | `education` | Check out my educational background |
 | `contact` | Get my contact information |
-| `launch globe` | Launch the interactive 3D globe viewer |
+| `cv` | Download my CV |
+| `globe` | Launch the interactive 3D globe viewer |
+| `exit` | Return from the globe viewer to the terminal |
 | `clear` | Clear the terminal screen |
 | `date` | Show current date and time |
 | `whoami` | Display current user information |
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 14, React, TypeScript
+- **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS
 - **Font**: Custom monospace fonts (Antonio Bold, LTYPE)
 - **Deployment**: Vercel
+
+## Requirements
+
+- Node.js 18+ (recommended 20+)
+- npm 9+ (or pnpm/yarn)
 
 ## 🏃‍♂️ Getting Started
 
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd daroh-os
+   cd daroh-terminal
    ```
 
 2. **Install dependencies**
@@ -63,7 +70,7 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 - Type any command and press Enter to execute
 - Use `help` to see all available commands
 - Try `fastfetch` for a quick overview
-- Use `launch globe` to open the 3D globe viewer
+- Use `globe` to open the 3D globe viewer
 - Type `exit` to return from the globe viewer to the terminal
 
 ## 📱 Responsive Design
@@ -93,10 +100,11 @@ npm run lint
 
 This project is optimized for deployment on [Vercel](https://vercel.com). Simply connect your repository and deploy!
 
-For other platforms, build the project and serve the `out` directory:
+For other platforms, build and start the Node server:
 
 ```bash
 npm run build
+npm start
 ```
 
 ## 🎨 Customization
@@ -105,3 +113,7 @@ npm run build
 - **Portfolio Data**: Update `src/data/portfolio.ts` with your information
 - **Styling**: Customize the theme in `src/app/globals.css`
 - **Components**: Extend functionality by modifying components in `src/components/`
+
+## License
+
+MIT
