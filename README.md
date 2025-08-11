@@ -1,4 +1,5 @@
 # 🖥️ Daroh-Terminal
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license) [![Node](https://img.shields.io/badge/Node-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/) [![Next.js](https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs)](https://nextjs.org/) [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=000)](https://react.dev/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 A sleek, terminal-inspired portfolio website that showcases my journey as a full-stack developer through an interactive command-line interface.
 
