@@ -325,7 +325,7 @@ export const useTerminal = () => {
         `;
       },
       cv: () => {
-        const cvUrl = "https://drive.google.com/file/d/1A8riu1ClQ9ruwFmsQWhWaX3x5ELdyRrs/view?usp=sharing";
+        const cvUrl = "https://drive.google.com/file/d/1qCixImOdVftR9TY4lXJmIeVVRI6Bi_61/view?usp=sharing";
         return `
           <span class="text-yellow-400">Click the link below to view my CV:</span><br>
           <a href="${cvUrl}" class="text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">
