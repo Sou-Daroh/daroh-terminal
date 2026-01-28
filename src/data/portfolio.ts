@@ -1,6 +1,6 @@
 export const portfolioData = {
   about: `
-    My name is Daroh. I'm a Software Engineering Student at with a passion for building innovative solutions of hardware and software.<br><br>
+    My name is Daroh. I'm a Software Engineering Student with a passion for building innovative solutions of hardware and software.<br><br>
     Type 'skills' to see my technical expertise or 'projects' to explore my work.
   `,
   skills: [
