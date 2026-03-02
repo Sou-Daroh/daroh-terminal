@@ -102,7 +102,7 @@ export const portfolioData = {
   ],
   contact: `
     <span class="text-green-400">Contact Information</span><br>
-    <span class="text-yellow-400"><i class="fas fa-envelope"></i> Email:</span> <a href='mailto:hello@daroh.me' class='text-blue-400 hover:underline'>hello@daroh.me</a><br>
+    <span class="text-yellow-400"><i class="fas fa-envelope"></i> Email:</span> <a href='mailto:hello@daroh.dev' class='text-blue-400 hover:underline'>hello@daroh.dev</a><br>
     <span class="text-yellow-400"><i class="fab fa-github"></i> GitHub:</span> <a href='https://github.com/Sou-Daroh' class='text-blue-400 hover:underline' target='_blank'>github.com/Sou-Daroh</a><br>
     <span class="text-yellow-400"><i class="fab fa-linkedin"></i> LinkedIn:</span> <a href='https://www.linkedin.com/in/daroh-sou' class='text-blue-400 hover:underline' target='_blank'>linkedin.com/in/daroh-sou</a><br>
   `,
@@ -114,7 +114,7 @@ export const portfolioData = {
     packages: "npm",
     editor: "VS Code",
     contact: {
-      email: "hello@daroh.me",
+      email: "hello@daroh.dev",
       github: "Sou-Daroh",
       linkedin: "Daroh-Sou",
     },
