@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://daroh.dev'),
+  alternates: {
+    canonical: '/',
+  },
   title: "Daroh Sou - Portfolio",
   description: "Portfolio of Sou Daroh - Software Developer and Creative Technologist",
   keywords: ["Sou Daroh", "Portfolio", "Software Developer", "Web Development", "Creative Technology"],
@@ -40,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.daroh.me",
+    url: "https://daroh.dev",
     siteName: "Daroh Sou Portfolio",
     title: "Daroh Sou - Portfolio",
     description: "Portfolio of Sou Daroh - Software Developer",
