@@ -1,17 +1,17 @@
-# 🖥️ Daroh-Terminal
+# Daroh-Terminal
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license) [![Node](https://img.shields.io/badge/Node-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/) [![Next.js](https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs)](https://nextjs.org/) [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=000)](https://react.dev/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 A sleek, terminal-inspired portfolio website that showcases my journey as a full-stack developer through an interactive command-line interface.
 
-## ✨ Features
+## Features
 
-- **Interactive Terminal**: Navigate through my portfolio using familiar terminal commands
-- **3D Globe Viewer**: Launch an interactive 3D globe with `globe`
-- **Real-time Status Bar**: Shows current date, time, and system information
-- **Responsive Design**: Optimized for both desktop and mobile experiences
-- **Multiple Commands**: Explore different sections with intuitive commands
+- **Interactive Terminal**: Navigate my portfolio using real terminal commands — no GUI needed
+- **3D Globe Viewer**: Visualize my global experience with an interactive WebGL globe (`globe`)
+- **Real-time Status Bar**: Live date, time, and system info in the footer
+- **Fully Responsive**: Touch-friendly on mobile, full-featured on desktop
 
-## 🚀 Available Commands
+## Available Commands
 
 | Command | Description |
 |---------|-------------|
@@ -23,14 +23,14 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 | `experience` | See my work experience and internships |
 | `education` | Check out my educational background |
 | `contact` | Get my contact information |
-| `cv` | Download my CV |
+| `cv` | Download my CV as a PDF |
 | `globe` | Launch the interactive 3D globe viewer |
 | `exit` | Return from the globe viewer to the terminal |
 | `clear` | Clear the terminal screen |
 | `date` | Show current date and time |
 | `whoami` | Display current user information |
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS
@@ -42,7 +42,7 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 - Node.js 18+ (recommended 20+)
 - npm 9+ (or pnpm/yarn)
 
-## 🏃‍♂️ Getting Started
+## Getting Started
 
 1. **Clone the repository**
    ```bash
@@ -63,25 +63,10 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 4. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-5. **Start exploring!**
+5. **Start exploring**
    Type `help` in the terminal to see all available commands
 
-## 💡 Usage
-
-- Type any command and press Enter to execute
-- Use `help` to see all available commands
-- Try `fastfetch` for a quick overview
-- Use `globe` to open the 3D globe viewer
-- Type `exit` to return from the globe viewer to the terminal
-
-## 📱 Responsive Design
-
-The terminal interface adapts seamlessly across devices:
-- **Desktop**: Full terminal experience with all features
-- **Mobile**: Touch-friendly interface with virtual keyboard support
-- **Tablet**: Optimized layout for medium screens
-
-## 🔧 Development
+## Development
 
 ```bash
 # Run development server
@@ -97,9 +82,9 @@ npm start
 npm run lint
 ```
 
-## 🚀 Deployment
+## Deployment
 
-This project is optimized for deployment on [Vercel](https://vercel.com). Simply connect your repository and deploy!
+This project is optimized for deployment on [Vercel](https://vercel.com). Simply connect your repository and deploy.
 
 For other platforms, build and start the Node server:
 
@@ -108,7 +93,7 @@ npm run build
 npm start
 ```
 
-## 🎨 Customization
+## Customization
 
 - **Commands**: Modify `src/config/commands.ts` to add or remove commands
 - **Portfolio Data**: Update `src/data/portfolio.ts` with your information
