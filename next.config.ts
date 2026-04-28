@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
+              // 'unsafe-eval' is required by Three.js/React Three Fiber for shader compilation
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com", 
               "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com", 
               "img-src 'self' data: blob:", 
