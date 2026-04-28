@@ -6,13 +6,13 @@ import { closest } from "fastest-levenshtein";
 
 import type { HistoryItem, CommandOutput } from "@/types/terminal";
 import { useTypingAnimation } from "@/hooks/useTypingAnimation";
+import { useCommandHistory } from "@/hooks/useCommandHistory";
 import { createCommandHandlers } from "@/config/commandHandlers";
 
 export const useTerminal = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [input, setInput] = useState("");
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
+  const { addCommand, navigateUp, navigateDown } = useCommandHistory();
   const { isTyping, setIsTyping, typingInterruptRef, typeText } = useTypingAnimation();
   const [showGlobe, setShowGlobe] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -100,9 +100,7 @@ export const useTerminal = () => {
           setInput("");
           return;
         }
-        const newCommandHistory = [...commandHistory, input];
-        setCommandHistory(newCommandHistory);
-        setHistoryIndex(newCommandHistory.length);
+        addCommand(input);
         const newHistory = [
           ...history,
           `${promptLine1}<br>${promptLine2}<span class="text-green-400">${input}</span>`,
@@ -130,31 +128,21 @@ export const useTerminal = () => {
         }
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        if (historyIndex > 0) {
-          setHistoryIndex(historyIndex - 1);
-          setInput(commandHistory[historyIndex - 1]);
-        } else if (commandHistory.length > 0) {
-          const newIndex = commandHistory.length - 1;
-          setHistoryIndex(newIndex);
-          setInput(commandHistory[newIndex]);
-        }
+        const prev = navigateUp();
+        if (prev !== null) setInput(prev);
       } else if (e.key === "ArrowDown") {
         e.preventDefault();
-        if (historyIndex < commandHistory.length - 1) {
-          setHistoryIndex(historyIndex + 1);
-          setInput(commandHistory[historyIndex + 1]);
-        } else {
-          setHistoryIndex(commandHistory.length);
-          setInput("");
-        }
+        const next = navigateDown();
+        if (next !== null) setInput(next);
       }
     },
     [
+      addCommand,
       allCommandNames,
-      commandHistory,
       history,
-      historyIndex,
       input,
+      navigateUp,
+      navigateDown,
       isTyping,
       setIsTyping,
       typingInterruptRef,
@@ -166,9 +154,7 @@ export const useTerminal = () => {
 
   const executeCommand = useCallback(
     (command: string) => {
-      const newCommandHistory = [...commandHistory, command];
-      setCommandHistory(newCommandHistory);
-      setHistoryIndex(newCommandHistory.length);
+      addCommand(command);
       const newHistory = [
         ...history,
         `${promptLine1}<br>${promptLine2}<span class="text-green-400">${command}</span>`,
@@ -176,7 +162,7 @@ export const useTerminal = () => {
       processCommand(command.toLowerCase(), newHistory);
       setInput("");
     },
-    [commandHistory, history, processCommand, promptLine1, promptLine2]
+    [addCommand, history, processCommand, promptLine1, promptLine2]
   );
 
   useEffect(() => {
