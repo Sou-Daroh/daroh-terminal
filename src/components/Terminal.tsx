@@ -7,48 +7,9 @@ import { useTerminal } from "@/hooks/useTerminal";
 import { commandList } from "@/config/commands";
 import { Command } from "@/config/commands";
 import TerminalOutput from "./TerminalOutput";
+import type { FastfetchData, ContactData, HistoryItem } from "@/types/terminal";
 
 const Globe = dynamic(() => import("./ui/Globe"), { ssr: false });
-
-interface FastfetchData {
-  type: "fastfetch";
-  data: {
-    name: string;
-    os: string;
-    kernel: string;
-    uptime: string;
-    shell: string;
-    terminal: string;
-    resolution: string;
-    colorDepth: string;
-    pixelRatio: number;
-    cpu: string;
-    gpu: string;
-    memoryUsed: string;
-    deviceType: string;
-    platform: string;
-    timezone: string;
-    language: string;
-    contact: {
-      email: string;
-      github: string;
-      linkedin: string;
-    };
-    art: string;
-    title: string;
-  };
-}
-
-interface ContactData {
-  type: "contact";
-  data: {
-    email: string;
-    github: string;
-    linkedin: string;
-  };
-}
-
-type HistoryItem = string | FastfetchData | ContactData;
 
 const CommandButton = ({ command, onClick }: { command: Command; onClick: (cmd: string) => void }) => (
   <button

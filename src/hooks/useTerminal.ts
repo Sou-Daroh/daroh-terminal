@@ -5,49 +5,7 @@ import { commands, commandList } from "@/config/commands";
 import { portfolioData } from "@/data/portfolio";
 import { closest } from "fastest-levenshtein";
 
-interface FastfetchData {
-  type: "fastfetch";
-  data: {
-    name: string;
-    title: string;
-    os: string;
-    kernel: string;
-    uptime: string;
-    shell: string;
-    terminal: string;
-    resolution: string;
-    colorDepth: string;
-    pixelRatio: number;
-    cpu: string;
-    gpu: string;
-    memory: string;
-    memoryUsed: string;
-    deviceType: string;
-    platform: string;
-    timezone: string;
-    language: string;
-    languages: string;
-    contact: {
-      email: string;
-      github: string;
-      linkedin: string;
-    };
-    art: string;
-  };
-}
-
-interface ContactData {
-  type: "contact";
-  data: {
-    email: string;
-    github: string;
-    linkedin: string;
-  };
-}
-
-type HistoryItem = string | FastfetchData | ContactData;
-type CommandOutput = string | FastfetchData | ContactData;
-type CommandHandler = (args: string[]) => CommandOutput;
+import type { FastfetchData, ContactData, HistoryItem, CommandOutput, CommandHandler } from "@/types/terminal";
 
 interface UserAgentData {
   platform?: string;
