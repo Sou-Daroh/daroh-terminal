@@ -75,10 +75,8 @@ export const useTerminal = () => {
 
   const handleInputKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      // Handle Ctrl+C with multiple detection methods
-      if ((e.ctrlKey && (e.key === "c" || e.key === "C")) || 
-          (e.ctrlKey && e.keyCode === 67) ||
-          (e.metaKey && (e.key === "c" || e.key === "C"))) {
+      // Handle Ctrl+C — only ctrlKey (metaKey is Cmd on Mac, used for native copy)
+      if (e.ctrlKey && (e.key === "c" || e.key === "C")) {
         e.preventDefault();
         e.stopPropagation();
         // Interrupt current typing or command

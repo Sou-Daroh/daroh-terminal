@@ -16,7 +16,7 @@ export const useTypingAnimation = () => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if (
         isTypingRef.current &&
-        (e.ctrlKey || e.metaKey) &&
+        e.ctrlKey &&
         (e.key.toLowerCase() === "c")
       ) {
         e.preventDefault();
