@@ -40,7 +40,7 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 ## Requirements
 
 - Node.js 18+ (recommended 20+)
-- npm 9+ (or pnpm/yarn)
+- [Bun](https://bun.sh/) (recommended) or npm 9+
 
 ## Getting Started
 
@@ -52,12 +52,12 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 
 2. **Install dependencies**
    ```bash
-   npm install
+   bun install
    ```
 
 3. **Run the development server**
    ```bash
-   npm run dev
+   bun dev
    ```
 
 4. **Open your browser**
@@ -70,16 +70,16 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 
 ```bash
 # Run development server
-npm run dev
+bun dev
 
 # Build for production
-npm run build
+bun run build
 
 # Start production server
-npm start
+bun start
 
 # Lint the code
-npm run lint
+bun run lint
 ```
 
 ## Deployment
@@ -89,8 +89,8 @@ This project is optimized for deployment on [Vercel](https://vercel.com). Simply
 For other platforms, build and start the Node server:
 
 ```bash
-npm run build
-npm start
+bun run build
+bun start
 ```
 
 ## Customization
