@@ -5,6 +5,7 @@ import { commands } from "@/config/commands";
 import { closest } from "fastest-levenshtein";
 
 import type { HistoryItem, CommandOutput } from "@/types/terminal";
+import { escapeHtml } from "@/utils/html";
 import { useTypingAnimation } from "@/hooks/useTypingAnimation";
 import { useCommandHistory } from "@/hooks/useCommandHistory";
 import { createCommandHandlers } from "@/config/commandHandlers";
@@ -47,11 +48,11 @@ export const useTerminal = () => {
       if (commandHandlers[commandName]) {
         output = commandHandlers[commandName](args);
       } else if (command.trim() !== "") {
-        const singleWordCommand = command.split(" ")[0];
-        const suggestion = closest(singleWordCommand, allCommandNames);
+        const singleWordCommand = escapeHtml(command.split(" ")[0]);
+        const suggestion = closest(command.split(" ")[0], allCommandNames);
         let suggestionText = "";
         if (suggestion) {
-          suggestionText = `<br>Did you mean '<span class="text-yellow-400">${suggestion}</span>'?`;
+          suggestionText = `<br>Did you mean '<span class="text-yellow-400">${escapeHtml(suggestion)}</span>'?`;
         }
         output = `<span class="text-red-400">Command not found: ${singleWordCommand}</span><br>Type 'help' for a list of available commands.${suggestionText}`;
       }
