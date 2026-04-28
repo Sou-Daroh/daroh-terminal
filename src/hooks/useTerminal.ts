@@ -6,6 +6,7 @@ import { portfolioData } from "@/data/portfolio";
 import { closest } from "fastest-levenshtein";
 
 import type { FastfetchData, ContactData, HistoryItem, CommandOutput, CommandHandler } from "@/types/terminal";
+import { escapeHtml } from "@/utils/html";
 
 interface UserAgentData {
   platform?: string;
@@ -298,15 +299,6 @@ export const useTerminal = () => {
       },
       sudo: () => `<span class="text-red">Permission denied.</span> Nice try though! 😄`,
       echo: (args) => {
-
-        const escapeHtml = (str: string) => {
-          return str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-        };
         return escapeHtml(args.join(" "));
       },
       date: () => new Date().toString(),

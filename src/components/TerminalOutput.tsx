@@ -2,20 +2,11 @@
 
 import React from 'react';
 import DOMPurify from 'dompurify';
+import { escapeHtml } from '@/utils/html';
 
 interface TerminalOutputProps {
   html: string;
 }
-
-// Server-side safe HTML escaping function
-const escapeHtml = (unsafe: string): string => {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-};
 
 // Safe HTML sanitization that works on both client and server
 const sanitizeHtml = (html: string): string => {
