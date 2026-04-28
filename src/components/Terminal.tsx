@@ -157,7 +157,7 @@ const HistoryLine = ({ line }: { line: HistoryItem }) => {
                     icon={<FaGithub size={14}/>}
                     href={`https://github.com/${contact.github}`}
                     text={contact.github}
-                    className="text-white-300 hover:text-green-100 break-all"
+                    className="text-white hover:text-green-100 break-all"
                   />
                   <ContactLink
                     icon={<FaLinkedin size={14} className="text-blue-400" />}
@@ -192,7 +192,7 @@ const HistoryLine = ({ line }: { line: HistoryItem }) => {
                   icon={<FaGithub size={16}/>}
                   href={`https://github.com/${github}`}
                   text={`github.com/${github}`}
-                  className="text-white-300 hover:text-green-100"
+                  className="text-white hover:text-green-100"
                 />
               </div>
               <div>
