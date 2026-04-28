@@ -5,23 +5,19 @@ import { commands, commandList } from "@/config/commands";
 import { portfolioData } from "@/data/portfolio";
 import { closest } from "fastest-levenshtein";
 
-import type { FastfetchData, ContactData, HistoryItem, CommandOutput, CommandHandler } from "@/types/terminal";
+import type { FastfetchData, HistoryItem, CommandOutput, CommandHandler } from "@/types/terminal";
 import { escapeHtml } from "@/utils/html";
 import { getDeviceInfo } from "@/utils/deviceInfo";
+import { useTypingAnimation } from "@/hooks/useTypingAnimation";
 
 export const useTerminal = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [input, setInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [isTyping, setIsTyping] = useState(false);
-  const isTypingRef = useRef(isTyping);
-  useEffect(() => {
-    isTypingRef.current = isTyping;
-  }, [isTyping]);
+  const { isTyping, setIsTyping, typingInterruptRef, typeText } = useTypingAnimation();
   const [showGlobe, setShowGlobe] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
-  const typingInterruptRef = useRef(false);
 
   const allCommandNames = Object.keys(commands);
 
@@ -200,63 +196,12 @@ export const useTerminal = () => {
 
       if (typeof output === "object") {
         setHistory([...currentHistory, output, ""]);
-        setIsTyping(false);
       } else if (typeof output === "string") {
-        setIsTyping(true);
-        typingInterruptRef.current = false;
         setHistory([...currentHistory, ""]);
-
-        await new Promise((res) => setTimeout(res, 50));
-
-        let typedOutput = "";
-        const typingDelay = 0;
-
-        for (let i = 0; i < output.length; i++) {
-            if (typingInterruptRef.current) {
-                setHistory(prevHistory => {
-                    const newHistory = [...prevHistory];
-                    const lastLine = newHistory[newHistory.length-1];
-                    if (typeof lastLine === 'string') {
-                        newHistory[newHistory.length-1] = lastLine + '<span class="text-red-400">^C</span>';
-                    }
-                    newHistory.push('');
-                    return newHistory;
-                });
-                setIsTyping(false);
-                return;
-            }
-
-            const tagMatch = output.substring(i).match(/^<[^>]+>/);
-            const entityMatch = output.substring(i).match(/^&[a-zA-Z0-9#]+;/);
-
-            if (tagMatch) {
-                const tag = tagMatch[0];
-                typedOutput += tag;
-                i += tag.length - 1;
-            } else if (entityMatch) {
-                const entity = entityMatch[0];
-                typedOutput += entity;
-                i += entity.length - 1;
-            } else {
-                typedOutput += output[i];
-            }
-            
-            setHistory(prevHistory => {
-                const newHistory = [...prevHistory];
-                newHistory[newHistory.length - 1] = typedOutput;
-                return newHistory;
-            });
-
-            if (i < output.length - 1) {
-                await new Promise((res) => setTimeout(res, typingDelay));
-            }
-        }
-        
-        setHistory(prevHistory => [...prevHistory, '']);
-        setIsTyping(false);
+        await typeText(output, setHistory);
       }
     },
-    [allCommandNames, commandHandlers]
+    [allCommandNames, commandHandlers, typeText]
   );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -349,6 +294,8 @@ export const useTerminal = () => {
       historyIndex,
       input,
       isTyping,
+      setIsTyping,
+      typingInterruptRef,
       processCommand,
       promptLine1,
       promptLine2,
@@ -374,88 +321,13 @@ export const useTerminal = () => {
     const initialCommand = "welcome";
     const welcomeMessage =
       "Welcome to my portfolio terminal!<br>Type 'help' to see available commands.";
-    const newHistory = [
+    const initialHistory: HistoryItem[] = [
       `${promptLine1}<br>${promptLine2}<span class="text-green-400">${initialCommand}</span>`,
+      "",
     ];
-
-    const typeMessage = async () => {
-      setIsTyping(true);
-      typingInterruptRef.current = false; 
-      setHistory([...newHistory, ""]);
-
-      await new Promise((res) => setTimeout(res, 50));
-
-      let typedOutput = "";
-      const typingDelay = 0;
-
-      for (let i = 0; i < welcomeMessage.length; i++) {
-       
-        if (typingInterruptRef.current) {
-            setHistory((prevHistory) => {
-                const newHistory = [...prevHistory];
-                const lastLine = newHistory[newHistory.length-1];
-                if (typeof lastLine === 'string') {
-                    newHistory[newHistory.length-1] = lastLine + '<span class="text-red-400">^C</span>';
-                }
-                newHistory.push('');
-                return newHistory;
-            });
-            setIsTyping(false);
-            return;
-        }
-
-        const tagMatch = welcomeMessage.substring(i).match(/^<[^>]+>/);
-        const entityMatch = welcomeMessage.substring(i).match(/^&[a-zA-Z0-9#]+;/);
-        if (tagMatch) {
-          const tag = tagMatch[0];
-          typedOutput += tag;
-          i += tag.length - 1;
-        } else if (entityMatch) {
-          const entity = entityMatch[0];
-          typedOutput += entity;
-          i += entity.length - 1;
-        } else {
-          typedOutput += welcomeMessage[i];
-        }
-
-        setHistory((prevHistory) => {
-          const newHistory = [...prevHistory];
-          newHistory[newHistory.length - 1] = typedOutput;
-          return newHistory;
-        });
-
-        if (i < welcomeMessage.length - 1) {
-          await new Promise((res) => setTimeout(res, typingDelay));
-        }
-      }
-
-      setHistory((prevHistory) => [...prevHistory, ""]);
-      setIsTyping(false);
-    };
-
-    typeMessage();
-
-    return () => {
-    };
-  }, [promptLine1, promptLine2]);
-
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if (
-        isTypingRef.current &&
-        (e.ctrlKey || e.metaKey) &&
-        (e.key.toLowerCase() === "c")
-      ) {
-        e.preventDefault();
-        e.stopPropagation();
-        typingInterruptRef.current = true;
-      }
-    };
-
-    window.addEventListener("keydown", handleGlobalKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleGlobalKeyDown);
-    };
+    setHistory(initialHistory);
+    typeText(welcomeMessage, setHistory);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

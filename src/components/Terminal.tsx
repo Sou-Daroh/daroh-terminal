@@ -7,7 +7,7 @@ import { useTerminal } from "@/hooks/useTerminal";
 import { commandList } from "@/config/commands";
 import { Command } from "@/config/commands";
 import TerminalOutput from "./TerminalOutput";
-import type { FastfetchData, ContactData, HistoryItem } from "@/types/terminal";
+import type { HistoryItem } from "@/types/terminal";
 
 const Globe = dynamic(() => import("./ui/Globe"), { ssr: false });
 
