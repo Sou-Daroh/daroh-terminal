@@ -254,11 +254,10 @@ const TerminalInput = ({
           value={input}
           onChange={onInputChange}
           onKeyDown={onInputKeyDown}
-          className="bg-transparent border-none text-green-400 focus:outline-none caret-transparent -ml-1"
+          className="bg-transparent border-none text-green-400 focus:outline-none caret-transparent -ml-1 min-w-0 flex-grow"
           autoComplete="off"
           autoFocus
           disabled={isTyping}
-          style={{ width: input.length > 0 ? `${input.length}ch` : '0ch' }}
         />
         <span className="blinking-cursor text-green-500">█</span>
       </div>
