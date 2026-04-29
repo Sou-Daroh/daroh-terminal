@@ -29,15 +29,6 @@ export interface FastfetchData {
   };
 }
 
-export interface ContactData {
-  type: "contact";
-  data: {
-    email: string;
-    github: string;
-    linkedin: string;
-  };
-}
-
-export type HistoryItem = string | FastfetchData | ContactData;
-export type CommandOutput = string | FastfetchData | ContactData;
+export type HistoryItem = string | FastfetchData;
+export type CommandOutput = string | FastfetchData;
 export type CommandHandler = (args: string[]) => CommandOutput;

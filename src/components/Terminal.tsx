@@ -134,42 +134,6 @@ const HistoryLine = React.memo(({ line }: { line: HistoryItem }) => {
             </div>
           </div>
         );
-      case "contact":
-        const { email, github, linkedin } = line.data;
-        
-        return (
-          <div className="py-2">
-            <div>
-              <span className="text-green-400 font-bold">Contact Information</span>
-            </div>
-            <div className="mt-2 space-y-2">
-              <div>
-                <ContactLink
-                  icon={<FaEnvelope size={16} className="text-red-400" />}
-                  href={`mailto:${email}`}
-                  text={email}
-                  className="text-yellow-300 hover:text-yellow-100"
-                />
-              </div>
-              <div>
-                <ContactLink
-                  icon={<FaGithub size={16}/>}
-                  href={`https://github.com/${github}`}
-                  text={`github.com/${github}`}
-                  className="text-white hover:text-green-100"
-                />
-              </div>
-              <div>
-                <ContactLink
-                  icon={<FaLinkedin size={16} className="text-blue-400" />}
-                  href={`https://linkedin.com/in/${linkedin}`}
-                  text={`linkedin.com/in/${linkedin}`}
-                  className="text-blue-300 hover:text-blue-100"
-                />
-              </div>
-            </div>
-          </div>
-        );
       default:
         return <TerminalOutput html={JSON.stringify(line)} />;
     }
@@ -235,6 +199,7 @@ const TerminalInput = ({
           autoComplete="off"
           autoFocus
           disabled={isTyping}
+          aria-label="Command input"
           style={{ width: `${input.length}ch` }}
         />
         <span className="blinking-cursor text-green-500">█</span>
@@ -292,6 +257,9 @@ const Terminal = () => {
       <TerminalHeader executeCommand={executeCommand} />
       <div
         ref={terminalRef}
+        role="log"
+        aria-label="Terminal output"
+        aria-live="polite"
         className="p-2 md:p-4 text-white font-mono flex-grow overflow-y-auto"
         onClick={() => document.getElementById("terminal-input")?.focus()}
       >
