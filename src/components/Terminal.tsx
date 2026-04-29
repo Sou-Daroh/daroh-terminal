@@ -195,7 +195,7 @@ const TerminalInput = ({
           value={input}
           onChange={onInputChange}
           onKeyDown={onInputKeyDown}
-          className="bg-transparent border-none text-green-400 focus:outline-none caret-transparent p-0 -ml-1"
+          className="bg-transparent border-none text-green-400 focus:outline-none caret-transparent p-0"
           autoComplete="off"
           autoFocus
           disabled={isTyping}
