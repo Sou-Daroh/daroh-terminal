@@ -36,9 +36,6 @@ export const metadata: Metadata = {
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
-    other: [
-      { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#000000" },
-    ],
   },
   manifest: "/site.webmanifest",
   openGraph: {
@@ -50,7 +47,7 @@ export const metadata: Metadata = {
     description: "Portfolio of Sou Daroh - Software Developer",
     images: [
       {
-        url: "/Open Graph Image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Daroh Terminal Portfolio - Software Developer",
@@ -61,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Daroh Sou - Portfolio",
     description: "Portfolio of Sou Daroh - Software Developer",
-    images: ["/Open Graph Image.png"],
+    images: ["/og-image.png"],
     creator: "@daroh",
   },
   other: {
