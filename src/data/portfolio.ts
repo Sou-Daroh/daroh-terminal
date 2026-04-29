@@ -100,12 +100,6 @@ export const portfolioData = {
       stack: 'Angular, TypeScript, Tailwind CSS, Font Awesome, Node.js, Express.js, MongoDB, Mongoose, JWT, Vite, Docker, Nginx',
     }
   ],
-  contact: `
-    <span class="text-green-400">Contact Information</span><br>
-    <span class="text-yellow-400"><i class="fas fa-envelope"></i> Email:</span> <a href='mailto:hello@daroh.dev' class='text-blue-400 hover:underline'>hello@daroh.dev</a><br>
-    <span class="text-yellow-400"><i class="fab fa-github"></i> GitHub:</span> <a href='https://github.com/Sou-Daroh' class='text-blue-400 hover:underline' target='_blank'>github.com/Sou-Daroh</a><br>
-    <span class="text-yellow-400"><i class="fab fa-linkedin"></i> LinkedIn:</span> <a href='https://www.linkedin.com/in/daroh-sou' class='text-blue-400 hover:underline' target='_blank'>linkedin.com/in/daroh-sou</a><br>
-  `,
   fastfetch: {
     name: "daroh",
     title: "Software Engineering Student",
