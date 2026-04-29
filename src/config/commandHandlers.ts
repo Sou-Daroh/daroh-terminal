@@ -8,12 +8,14 @@ interface CommandHandlerDeps {
   setShowGlobe: (show: boolean) => void;
   setHistory: React.Dispatch<React.SetStateAction<HistoryItem[]>>;
   showGlobe: boolean;
+  commandHistory: string[];
 }
 
 export const createCommandHandlers = ({
   setShowGlobe,
   setHistory,
   showGlobe,
+  commandHistory,
 }: CommandHandlerDeps): { [key: string]: CommandHandler } => ({
   help: () =>
     `Available commands:<br>${commandList
@@ -149,5 +151,49 @@ export const createCommandHandlers = ({
     }
     setHistory([]);
     return "";
+  },
+  exit: () => "Nothing to exit. You're already in the terminal.",
+  // Aliases
+  ls: () =>
+    `Available commands:<br>${commandList
+      .map((cmd) => `&nbsp;- ${cmd.name}: ${cmd.description}`)
+      .join("<br>")}`,
+  neofetch: (): FastfetchData => {
+    const deviceInfo = getDeviceInfo();
+    return {
+      type: "fastfetch",
+      data: {
+        name: portfolioData.fastfetch.name,
+        title: portfolioData.fastfetch.title,
+        os: deviceInfo.os,
+        kernel: deviceInfo.kernel,
+        uptime: deviceInfo.uptime,
+        shell: deviceInfo.shell,
+        terminal: deviceInfo.terminal,
+        resolution: deviceInfo.resolution,
+        colorDepth: deviceInfo.colorDepth,
+        pixelRatio: deviceInfo.pixelRatio,
+        cpu: deviceInfo.cpu,
+        gpu: deviceInfo.gpu,
+        memory: deviceInfo.memory,
+        memoryUsed: deviceInfo.memoryUsed,
+        deviceType: deviceInfo.deviceType,
+        platform: deviceInfo.platform,
+        timezone: deviceInfo.timezone,
+        language: deviceInfo.language,
+        languages: deviceInfo.languages,
+        contact: portfolioData.fastfetch.contact,
+        art: portfolioData.fastfetch.art
+      },
+    };
+  },
+  history: () => {
+    if (commandHistory.length === 0) {
+      return "No commands in history.";
+    }
+    const lines = commandHistory.map(
+      (cmd, i) => `&nbsp;&nbsp;<span class="text-gray-400">${String(i + 1).padStart(4, '\u00A0')}</span>&nbsp;&nbsp;${escapeHtml(cmd)}`
+    );
+    return lines.join("<br>");
   },
 });

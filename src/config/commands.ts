@@ -22,6 +22,9 @@ export const commands: { [key: string]: Command } = {
   echo: { name: "echo", description: "Echo back your text", isDisplayed: false },
   date: { name: "date", description: "Show current date and time", isDisplayed: false },
   whoami: { name: "whoami", description: "Display current user", isDisplayed: false },
+  ls: { name: "ls", description: "Alias for help", isDisplayed: false },
+  neofetch: { name: "neofetch", description: "Alias for fastfetch", isDisplayed: false },
+  history: { name: "history", description: "Show command history", isDisplayed: false },
 };
 
 export const commandList = Object.values(commands).filter(cmd => cmd.isDisplayed); 

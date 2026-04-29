@@ -37,6 +37,7 @@ export const useCommandHistory = () => {
   }, [commandHistory, historyIndex]);
 
   return {
+    commandHistory,
     addCommand,
     navigateUp,
     navigateDown,

@@ -13,7 +13,7 @@ import { createCommandHandlers } from "@/config/commandHandlers";
 export const useTerminal = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [input, setInput] = useState("");
-  const { addCommand, navigateUp, navigateDown } = useCommandHistory();
+  const { commandHistory, addCommand, navigateUp, navigateDown } = useCommandHistory();
   const { isTyping, setIsTyping, currentTypingOutput, typingInterruptRef, typeText } = useTypingAnimation();
   const [showGlobe, setShowGlobe] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -24,8 +24,8 @@ export const useTerminal = () => {
   const promptLine2 = `<span class="text-green-400">└─</span><span class="text-indigo-500">$</span>&nbsp;`;
 
   const commandHandlers = useMemo(
-    () => createCommandHandlers({ setShowGlobe, setHistory, showGlobe }),
-    [showGlobe]
+    () => createCommandHandlers({ setShowGlobe, setHistory, showGlobe, commandHistory }),
+    [showGlobe, commandHistory]
   );
 
   const processCommand = useCallback(
