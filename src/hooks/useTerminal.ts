@@ -14,7 +14,7 @@ export const useTerminal = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [input, setInput] = useState("");
   const { addCommand, navigateUp, navigateDown } = useCommandHistory();
-  const { isTyping, setIsTyping, typingInterruptRef, typeText } = useTypingAnimation();
+  const { isTyping, setIsTyping, currentTypingOutput, typingInterruptRef, typeText } = useTypingAnimation();
   const [showGlobe, setShowGlobe] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +60,7 @@ export const useTerminal = () => {
       if (typeof output === "object") {
         setHistory([...currentHistory, output, ""]);
       } else if (typeof output === "string") {
-        setHistory([...currentHistory, ""]);
+        setHistory(currentHistory);
         await typeText(output, setHistory);
       }
     },
@@ -181,10 +181,11 @@ export const useTerminal = () => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [history]);
+  }, [history, currentTypingOutput]);
 
   return {
     history,
+    currentTypingOutput,
     input,
     isTyping,
     showGlobe,

@@ -5,6 +5,7 @@ import type { HistoryItem } from "@/types/terminal";
 
 export const useTypingAnimation = () => {
   const [isTyping, setIsTyping] = useState(false);
+  const [currentTypingOutput, setCurrentTypingOutput] = useState<string | null>(null);
   const isTypingRef = useRef(isTyping);
   const typingInterruptRef = useRef(false);
 
@@ -38,6 +39,7 @@ export const useTypingAnimation = () => {
     ) => {
       setIsTyping(true);
       typingInterruptRef.current = false;
+      setCurrentTypingOutput("");
 
       await new Promise((res) => setTimeout(res, 50));
 
@@ -46,16 +48,13 @@ export const useTypingAnimation = () => {
 
       for (let i = 0; i < text.length; i++) {
         if (typingInterruptRef.current) {
-          setHistory((prevHistory) => {
-            const newHistory = [...prevHistory];
-            const lastLine = newHistory[newHistory.length - 1];
-            if (typeof lastLine === "string") {
-              newHistory[newHistory.length - 1] =
-                lastLine + '<span class="text-red-400">^C</span>';
-            }
-            newHistory.push("");
-            return newHistory;
-          });
+          // Commit the interrupted output + ^C marker to history
+          setHistory((prevHistory) => [
+            ...prevHistory,
+            typedOutput + '<span class="text-red-400">^C</span>',
+            "",
+          ]);
+          setCurrentTypingOutput(null);
           setIsTyping(false);
           return;
         }
@@ -75,18 +74,17 @@ export const useTypingAnimation = () => {
           typedOutput += text[i];
         }
 
-        setHistory((prevHistory) => {
-          const newHistory = [...prevHistory];
-          newHistory[newHistory.length - 1] = typedOutput;
-          return newHistory;
-        });
+        // Update only the isolated typing output state — history stays untouched
+        setCurrentTypingOutput(typedOutput);
 
         if (i < text.length - 1) {
           await new Promise((res) => setTimeout(res, typingDelay));
         }
       }
 
-      setHistory((prevHistory) => [...prevHistory, ""]);
+      // Typing complete: commit the final output to history and clear typing state
+      setHistory((prevHistory) => [...prevHistory, typedOutput, ""]);
+      setCurrentTypingOutput(null);
       setIsTyping(false);
     },
     []
@@ -95,6 +93,8 @@ export const useTypingAnimation = () => {
   return {
     isTyping,
     setIsTyping,
+    currentTypingOutput,
+    setCurrentTypingOutput,
     typingInterruptRef,
     typeText,
   };
