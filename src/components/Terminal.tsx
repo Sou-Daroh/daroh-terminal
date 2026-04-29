@@ -7,6 +7,7 @@ import { useTerminal } from "@/hooks/useTerminal";
 import { commandList } from "@/config/commands";
 import { Command } from "@/config/commands";
 import TerminalOutput from "./TerminalOutput";
+import GlobeErrorBoundary from "./ui/GlobeErrorBoundary";
 import type { HistoryItem } from "@/types/terminal";
 
 const Globe = dynamic(() => import("./ui/Globe"), { ssr: false });
@@ -58,7 +59,9 @@ const ContactLink = ({
   </a>
 );
 
-const HistoryLine = ({ line }: { line: HistoryItem }) => {
+// Memoized to prevent re-renders of already-rendered history items
+// during typing animation or when new items are added to the history array.
+const HistoryLine = React.memo(({ line }: { line: HistoryItem }) => {
   if (typeof line === "string") {
     return <TerminalOutput html={line} />;
   }
@@ -173,7 +176,9 @@ const HistoryLine = ({ line }: { line: HistoryItem }) => {
   }
 
   return null;
-};
+});
+
+HistoryLine.displayName = "HistoryLine";
 
 const TerminalHistory = ({ history }: { history: HistoryItem[] }) => (
   <div>
@@ -184,6 +189,17 @@ const TerminalHistory = ({ history }: { history: HistoryItem[] }) => (
     ))}
   </div>
 );
+
+// Separate component for the currently-typing output line.
+// This isolates typing animation re-renders from the committed history array.
+const TypingOutput = ({ content }: { content: string | null }) => {
+  if (content === null) return null;
+  return (
+    <div className="mb-2">
+      <TerminalOutput html={content} />
+    </div>
+  );
+};
 
 const TerminalInput = ({
   input,
@@ -226,9 +242,23 @@ const TerminalInput = ({
     </div>
   );
 
+// Globe loading spinner shown as Suspense fallback
+const GlobeLoadingSpinner = () => (
+  <div className="flex flex-col items-center justify-center h-screen bg-black">
+    <div className="relative w-16 h-16 mb-4">
+      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-green-400 border-r-cyan-400 animate-spin" />
+      <div className="absolute inset-2 rounded-full border-2 border-transparent border-b-blue-400 border-l-indigo-400 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
+    </div>
+    <p className="text-green-400 font-mono text-sm animate-pulse">
+      Initializing Globe...
+    </p>
+  </div>
+);
+
 const Terminal = () => {
   const {
     history,
+    currentTypingOutput,
     input,
     isTyping,
     showGlobe,
@@ -245,13 +275,15 @@ const Terminal = () => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [history, isTyping, terminalRef]);
+  }, [history, currentTypingOutput, isTyping, terminalRef]);
 
   if (showGlobe) {
     return (
-      <Suspense fallback={null}>
-        <Globe onExit={() => setShowGlobe(false)} />
-      </Suspense>
+      <GlobeErrorBoundary onExit={() => setShowGlobe(false)}>
+        <Suspense fallback={<GlobeLoadingSpinner />}>
+          <Globe onExit={() => setShowGlobe(false)} />
+        </Suspense>
+      </GlobeErrorBoundary>
     );
   }
 
@@ -264,6 +296,7 @@ const Terminal = () => {
         onClick={() => document.getElementById("terminal-input")?.focus()}
       >
         <TerminalHistory history={history} />
+        <TypingOutput content={currentTypingOutput} />
         <TerminalInput
           input={input}
           promptLine1={promptLine1}
@@ -277,4 +310,4 @@ const Terminal = () => {
   );
 };
 
-export default Terminal; 
+export default Terminal;
