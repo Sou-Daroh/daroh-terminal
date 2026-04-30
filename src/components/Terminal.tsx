@@ -131,6 +131,19 @@ const HistoryLine = React.memo(({ line }: { line: HistoryItem }) => {
                   />
                 </div>
               </div>
+              {/* ANSI-style color palette blocks */}
+              <div className="pt-3">
+                <div className="flex gap-0">
+                  {['#1e1e1e','#e06c75','#98c379','#e5c07b','#61afef','#c678dd','#56b6c2','#abb2bf'].map((c) => (
+                    <span key={c} style={{ backgroundColor: c, width: '1.5em', height: '1em', display: 'inline-block' }} />
+                  ))}
+                </div>
+                <div className="flex gap-0">
+                  {['#5c6370','#e06c75','#98c379','#d19a66','#61afef','#c678dd','#56b6c2','#ffffff'].map((c) => (
+                    <span key={c+'-b'} style={{ backgroundColor: c, width: '1.5em', height: '1em', display: 'inline-block' }} />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         );
