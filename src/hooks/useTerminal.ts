@@ -20,7 +20,7 @@ export const useTerminal = () => {
 
   const allCommandNames = Object.keys(commands);
 
-  const promptLine1 = `<span class="text-green-400">┌─(</span><span class="text-indigo-500 font-bold">daroh@terminal</span><span class="text-green-400">)-[~]</span>`;
+  const promptLine1 = `<span class="text-green-400">┌─(</span><span class="text-indigo-500 font-bold">daroh@terminal</span><span class="text-green-400">)-[~/portfolio]</span> <span class="text-yellow-400">(main)</span>`;
   const promptLine2 = `<span class="text-green-400">└─</span><span class="text-indigo-500">$</span>&nbsp;`;
 
   const commandHandlers = useMemo(
@@ -92,19 +92,61 @@ export const useTerminal = () => {
         setInput("");
         return;
       }
+
+      // Ctrl+L — clear terminal (same as 'clear' command)
+      if (e.ctrlKey && (e.key === "l" || e.key === "L")) {
+        e.preventDefault();
+        setHistory([]);
+        return;
+      }
+
+      // Ctrl+U — clear current input line
+      if (e.ctrlKey && (e.key === "u" || e.key === "U")) {
+        e.preventDefault();
+        setInput("");
+        return;
+      }
+
+      // Ctrl+A — move cursor to start of input
+      if (e.ctrlKey && (e.key === "a" || e.key === "A")) {
+        e.preventDefault();
+        const inputEl = e.currentTarget;
+        inputEl.setSelectionRange(0, 0);
+        return;
+      }
+
+      // Ctrl+E — move cursor to end of input
+      if (e.ctrlKey && (e.key === "e" || e.key === "E")) {
+        e.preventDefault();
+        const inputEl = e.currentTarget;
+        inputEl.setSelectionRange(input.length, input.length);
+        return;
+      }
       
       if (e.key === "Enter" && !isTyping) {
-        if (input.trim() === "") {
+        // Handle !! — re-execute last command
+        let commandToRun = input;
+        if (input.trim() === "!!") {
+          const lastCmd = commandHistory[commandHistory.length - 1];
+          if (!lastCmd) {
+            setHistory([...history, `${promptLine1}<br>${promptLine2}<span class="text-green-400">!!</span>`, `<span class="text-red-400">!!: no previous command</span>`, ""]);
+            setInput("");
+            return;
+          }
+          commandToRun = lastCmd;
+        }
+
+        if (commandToRun.trim() === "") {
           setHistory([...history, `${promptLine1}<br>${promptLine2}`, ""]);
           setInput("");
           return;
         }
-        addCommand(input);
+        addCommand(commandToRun);
         const newHistory = [
           ...history,
-          `${promptLine1}<br>${promptLine2}<span class="text-green-400">${input}</span>`,
+          `${promptLine1}<br>${promptLine2}<span class="text-green-400">${commandToRun}</span>`,
         ];
-        processCommand(input.toLowerCase(), newHistory);
+        processCommand(commandToRun.toLowerCase(), newHistory);
         setInput("");
       } else if (e.key === "Tab") {
         e.preventDefault();
@@ -138,6 +180,7 @@ export const useTerminal = () => {
     [
       addCommand,
       allCommandNames,
+      commandHistory,
       history,
       input,
       navigateUp,
