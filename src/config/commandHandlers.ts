@@ -138,7 +138,7 @@ export const createCommandHandlers = ({
   },
   globe: () => {
     setShowGlobe(true);
-    return "Launching globe... Please use 'exit' to return to the terminal.";
+    return "";
   },
   sudo: () => `<span class="text-red">Permission denied.</span> Nice try though! 😄`,
   echo: (args) => {

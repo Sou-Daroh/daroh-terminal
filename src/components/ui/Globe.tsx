@@ -190,15 +190,22 @@ export function Globe({ onExit }: { onExit?: () => void }) {
   );
 
   // Close globe on Escape key
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape" && onExit) {
       onExit();
     }
   };
 
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
+
   return (
     <div
-      className="flex flex-row items-center justify-center py-4 md:py-20 h-screen bg-black relative w-full"
+      ref={containerRef}
+      className="flex flex-row items-center justify-center py-4 md:py-20 h-screen bg-black relative w-full outline-none"
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
