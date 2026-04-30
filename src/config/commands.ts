@@ -25,6 +25,9 @@ export const commands: { [key: string]: Command } = {
   ls: { name: "ls", description: "Alias for help", isDisplayed: false },
   neofetch: { name: "neofetch", description: "Alias for fastfetch", isDisplayed: false },
   history: { name: "history", description: "Show command history", isDisplayed: false },
+  pwd: { name: "pwd", description: "Print working directory", isDisplayed: false },
+  man: { name: "man", description: "Display manual page for a command", isDisplayed: false },
+  cat: { name: "cat", description: "Display command output (cat [command])", isDisplayed: false },
 };
 
 export const commandList = Object.values(commands).filter(cmd => cmd.isDisplayed); 

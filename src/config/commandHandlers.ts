@@ -1,4 +1,4 @@
-import { commandList } from "@/config/commands";
+import { commandList, commands } from "@/config/commands";
 import { portfolioData } from "@/data/portfolio";
 import { getDeviceInfo } from "@/utils/deviceInfo";
 import { escapeHtml } from "@/utils/html";
@@ -16,11 +16,12 @@ export const createCommandHandlers = ({
   setHistory,
   showGlobe,
   commandHistory,
-}: CommandHandlerDeps): { [key: string]: CommandHandler } => ({
+}: CommandHandlerDeps): { [key: string]: CommandHandler } => {
+  const handlers: { [key: string]: CommandHandler } = {
   help: () =>
     `Available commands:<br>${commandList
       .map((cmd) => `&nbsp;- ${cmd.name}: ${cmd.description}`)
-      .join("<br>")}`,
+      .join("<br>")}<br><br><span class="text-gray-400">Tip: Try 'man [command]' for detailed info, or 'cat [command]' to view output.</span>`,
   fastfetch: (): FastfetchData => {
     const deviceInfo = getDeviceInfo();
     return {
@@ -153,6 +154,41 @@ export const createCommandHandlers = ({
     return "";
   },
   exit: () => "Nothing to exit. You're already in the terminal.",
+  pwd: () => `<span class="text-blue-400">~/daroh/portfolio</span>`,
+  man: (args) => {
+    const cmdName = args[0];
+    if (!cmdName) {
+      return `<span class="text-red-400">What manual page do you want?</span><br>Usage: man [command]`;
+    }
+    const cmd = commands[cmdName];
+    if (!cmd) {
+      return `<span class="text-red-400">No manual entry for ${escapeHtml(cmdName)}</span>`;
+    }
+    return (
+      `<span class="text-yellow-400 font-bold">${cmd.name.toUpperCase()}(1)</span><br><br>` +
+      `<span class="text-green-400 font-bold">NAME</span><br>` +
+      `&nbsp;&nbsp;&nbsp;&nbsp;${cmd.name} - ${cmd.description}<br><br>` +
+      `<span class="text-green-400 font-bold">SYNOPSIS</span><br>` +
+      `&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bold">${cmd.name}</span>${cmdName === 'echo' ? ' [text...]' : cmdName === 'man' ? ' [command]' : cmdName === 'cat' ? ' [command]' : ''}<br><br>` +
+      `<span class="text-green-400 font-bold">DESCRIPTION</span><br>` +
+      `&nbsp;&nbsp;&nbsp;&nbsp;${cmd.description}`
+    );
+  },
+  cat: (args) => {
+    const target = args[0];
+    if (!target) {
+      return `<span class="text-red-400">cat: missing operand</span><br>Usage: cat [command]`;
+    }
+    const handler = handlers[target];
+    if (!handler) {
+      return `<span class="text-red-400">cat: ${escapeHtml(target)}: No such file or directory</span>`;
+    }
+    // Delegate to the target handler (but avoid recursive cat or dangerous side-effects)
+    if (target === 'cat' || target === 'clear' || target === 'globe') {
+      return `<span class="text-red-400">cat: ${escapeHtml(target)}: Is not a readable file</span>`;
+    }
+    return handler([]);
+  },
   // Aliases
   ls: () =>
     `Available commands:<br>${commandList
@@ -196,4 +232,6 @@ export const createCommandHandlers = ({
     );
     return lines.join("<br>");
   },
-});
+  };
+  return handlers;
+};
