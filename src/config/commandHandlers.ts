@@ -5,16 +5,12 @@ import { escapeHtml } from "@/utils/html";
 import type { FastfetchData, HistoryItem, CommandHandler } from "@/types/terminal";
 
 interface CommandHandlerDeps {
-  setShowGlobe: (show: boolean) => void;
   setHistory: React.Dispatch<React.SetStateAction<HistoryItem[]>>;
-  showGlobe: boolean;
   commandHistory: string[];
 }
 
 export const createCommandHandlers = ({
-  setShowGlobe,
   setHistory,
-  showGlobe,
   commandHistory,
 }: CommandHandlerDeps): { [key: string]: CommandHandler } => {
   const handlers: { [key: string]: CommandHandler } = {
@@ -136,10 +132,6 @@ export const createCommandHandlers = ({
           <span class="text-gray-400">The CV will open in a new tab when you click the link.</span>
         `;
   },
-  globe: () => {
-    setShowGlobe(true);
-    return "";
-  },
   sudo: () => `<span class="text-red">Permission denied.</span> Nice try though! 😄`,
   echo: (args) => {
     return escapeHtml(args.join(" "));
@@ -147,13 +139,9 @@ export const createCommandHandlers = ({
   date: () => new Date().toString(),
   whoami: () => "daroh@terminal",
   clear: () => {
-    if (showGlobe) {
-      return "Cannot clear the terminal while the globe is active. Use 'exit' to return.";
-    }
     setHistory([]);
     return "";
   },
-  exit: () => "Nothing to exit. You're already in the terminal.",
   pwd: () => `<span class="text-blue-400">~/daroh/portfolio</span>`,
   man: (args) => {
     const cmdName = args[0];
@@ -184,7 +172,7 @@ export const createCommandHandlers = ({
       return `<span class="text-red-400">cat: ${escapeHtml(target)}: No such file or directory</span>`;
     }
     // Delegate to the target handler (but avoid recursive cat or dangerous side-effects)
-    if (target === 'cat' || target === 'clear' || target === 'globe') {
+    if (target === 'cat' || target === 'clear') {
       return `<span class="text-red-400">cat: ${escapeHtml(target)}: Is not a readable file</span>`;
     }
     return handler([]);

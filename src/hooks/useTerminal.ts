@@ -15,7 +15,6 @@ export const useTerminal = () => {
   const [input, setInput] = useState("");
   const { commandHistory, addCommand, navigateUp, navigateDown } = useCommandHistory();
   const { isTyping, setIsTyping, currentTypingOutput, typingInterruptRef, typeText } = useTypingAnimation();
-  const [showGlobe, setShowGlobe] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
 
   const allCommandNames = Object.keys(commands);
@@ -24,8 +23,8 @@ export const useTerminal = () => {
   const promptLine2 = `<span class="text-green-400">└─</span><span class="text-indigo-500">$</span>&nbsp;`;
 
   const commandHandlers = useMemo(
-    () => createCommandHandlers({ setShowGlobe, setHistory, showGlobe, commandHistory }),
-    [showGlobe, commandHistory]
+    () => createCommandHandlers({ setHistory, commandHistory }),
+    [commandHistory]
   );
 
   const processCommand = useCallback(
@@ -231,13 +230,11 @@ export const useTerminal = () => {
     currentTypingOutput,
     input,
     isTyping,
-    showGlobe,
     terminalRef,
     promptLine1,
     promptLine2,
     handleInputChange,
     handleInputKeyDown,
-    setShowGlobe,
     executeCommand,
   };
 }; 

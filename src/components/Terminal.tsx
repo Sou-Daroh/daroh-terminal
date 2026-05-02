@@ -1,16 +1,12 @@
 "use client";
 
-import React, { Suspense, useEffect } from "react";
-import dynamic from "next/dynamic";
+import React, { useEffect } from "react";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import { useTerminal } from "@/hooks/useTerminal";
 import { commandList } from "@/config/commands";
 import { Command } from "@/config/commands";
 import TerminalOutput from "./TerminalOutput";
-import GlobeErrorBoundary from "./ui/GlobeErrorBoundary";
 import type { HistoryItem } from "@/types/terminal";
-
-const Globe = dynamic(() => import("./ui/Globe"), { ssr: false });
 
 const CommandButton = ({ command, onClick }: { command: Command; onClick: (cmd: string) => void }) => (
   <button
@@ -220,32 +216,17 @@ const TerminalInput = ({
     </div>
   );
 
-// Globe loading spinner shown as Suspense fallback
-const GlobeLoadingSpinner = () => (
-  <div className="flex flex-col items-center justify-center h-screen bg-black">
-    <div className="relative w-16 h-16 mb-4">
-      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-green-400 border-r-cyan-400 animate-spin" />
-      <div className="absolute inset-2 rounded-full border-2 border-transparent border-b-blue-400 border-l-indigo-400 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
-    </div>
-    <p className="text-green-400 font-mono text-sm animate-pulse">
-      Initializing Globe...
-    </p>
-  </div>
-);
-
 const Terminal = () => {
   const {
     history,
     currentTypingOutput,
     input,
     isTyping,
-    showGlobe,
     terminalRef,
     promptLine1,
     promptLine2,
     handleInputChange,
     handleInputKeyDown,
-    setShowGlobe,
     executeCommand,
   } = useTerminal();
 
@@ -254,16 +235,6 @@ const Terminal = () => {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [history, currentTypingOutput, isTyping, terminalRef]);
-
-  if (showGlobe) {
-    return (
-      <GlobeErrorBoundary onExit={() => setShowGlobe(false)}>
-        <Suspense fallback={<GlobeLoadingSpinner />}>
-          <Globe onExit={() => setShowGlobe(false)} />
-        </Suspense>
-      </GlobeErrorBoundary>
-    );
-  }
 
   return (
     <div className="w-full h-full bg-black shadow-lg flex flex-col terminal">
