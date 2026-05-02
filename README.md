@@ -24,7 +24,6 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 | `education` | Check out my educational background |
 | `contact` | Get my contact information |
 | `cv` | Download my CV as a PDF |
-| `globe` | Launch the interactive 3D globe viewer |
 | `exit` | Return from the globe viewer to the terminal |
 | `clear` | Clear the terminal screen |
 | `date` | Show current date and time |
