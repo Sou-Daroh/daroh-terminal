@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaGithub, FaLinkedin, FaEnvelope, FaCopy, FaCheck } from "react-icons/fa";
 import { useTerminal } from "@/hooks/useTerminal";
 import { commandList } from "@/config/commands";
 import { Command } from "@/config/commands";
@@ -153,11 +153,52 @@ const HistoryLine = React.memo(({ line }: { line: HistoryItem }) => {
 
 HistoryLine.displayName = "HistoryLine";
 
+// Helper to extract text content from HistoryItem
+const getHistoryItemText = (line: HistoryItem): string => {
+  if (typeof line === "string") {
+    return line.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ");
+  }
+  if (line.type === "fastfetch") {
+    const { name, os, kernel, uptime, shell, terminal, resolution, cpu, gpu, memoryUsed, deviceType, platform, contact } = line.data;
+    return `Name: ${name}\nOS: ${os}\nKernel: ${kernel}\nUptime: ${uptime}\nShell: ${shell}\nTerminal: ${terminal}\nDisplay: ${resolution}\nCPU: ${cpu}\nGPU: ${gpu}\nMemory: ${memoryUsed}\nHost: ${deviceType} (${platform})\nContact: ${contact.email} | ${contact.github} | ${contact.linkedin}`;
+  }
+  return "";
+};
+
+const CopyableOutput = ({ line }: { line: HistoryItem }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    const text = getHistoryItemText(line);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Ignore copy errors
+    }
+  };
+
+  return (
+    <div className="group relative">
+      <HistoryLine line={line} />
+      <button
+        onClick={handleCopy}
+        className="absolute top-0 right-0 p-1 text-xs text-green-400 opacity-0 group-hover:opacity-100 hover:bg-green-900/50 rounded transition-opacity"
+        title="Copy output"
+        aria-label="Copy output to clipboard"
+      >
+        {copied ? <FaCheck className="text-green-400" /> : <FaCopy className="text-gray-400 hover:text-green-400" />}
+      </button>
+    </div>
+  );
+};
+
 const TerminalHistory = ({ history }: { history: HistoryItem[] }) => (
   <div>
     {history.map((line, index) => (
       <div key={index} className="mb-2">
-        <HistoryLine line={line} />
+        <CopyableOutput line={line} />
       </div>
     ))}
   </div>
