@@ -271,6 +271,27 @@ const Terminal = () => {
     executeCommand,
   } = useTerminal();
 
+  const [fontSize, setFontSize] = useState(16);
+
+  // Handle Ctrl+Plus and Ctrl+Minus for font resizing
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && (e.key === "+" || e.key === "=")) {
+        e.preventDefault();
+        setFontSize((prev) => Math.min(prev + 1, 24));
+      } else if (e.ctrlKey && (e.key === "-" || e.key === "_")) {
+        e.preventDefault();
+        setFontSize((prev) => Math.max(prev - 1, 10));
+      } else if (e.ctrlKey && e.key === "0") {
+        e.preventDefault();
+        setFontSize(16); // Reset to default
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
@@ -286,6 +307,7 @@ const Terminal = () => {
         aria-label="Terminal output"
         aria-live="polite"
         className="p-2 md:p-4 text-white font-mono flex-grow overflow-y-auto"
+        style={{ fontSize: `${fontSize}px` }}
         onClick={() => document.getElementById("terminal-input")?.focus()}
       >
         <TerminalHistory history={history} />
