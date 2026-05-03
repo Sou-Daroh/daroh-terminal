@@ -106,11 +106,17 @@ export const useTerminal = () => {
         return;
       }
 
+      if (e.ctrlKey && e.key === "Backspace") {
+        e.preventDefault();
+        setInput("");
+        return;
+      }
+
       // Ctrl+A — move cursor to start of input
       if (e.ctrlKey && (e.key === "a" || e.key === "A")) {
         e.preventDefault();
         const inputEl = e.currentTarget;
-        inputEl.setSelectionRange(0, 0);
+        inputEl.setSelectionRange(0, input.length);
         return;
       }
 
