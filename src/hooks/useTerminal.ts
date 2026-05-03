@@ -13,14 +13,31 @@ import { createCommandHandlers } from "@/config/commandHandlers";
 export const useTerminal = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [input, setInput] = useState("");
+  const [ghostText, setGhostText] = useState<string | null>(null);
+  const [allSelected, setAllSelected] = useState(false);
   const { commandHistory, addCommand, navigateUp, navigateDown } = useCommandHistory();
   const { isTyping, setIsTyping, currentTypingOutput, typingInterruptRef, typeText } = useTypingAnimation();
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  const allCommandNames = Object.keys(commands);
+  const allCommandNames = useMemo(() => Object.keys(commands), []);
 
   const promptLine1 = `<span class="text-green-400">┌─(</span><span class="text-indigo-500 font-bold">daroh@terminal</span><span class="text-green-400">)-[~/portfolio]</span> <span class="text-yellow-400">(main)</span>`;
   const promptLine2 = `<span class="text-green-400">└─</span><span class="text-indigo-500">$</span>&nbsp;`;
+
+  useEffect(() => {
+    const currentInput = input.trim().toLowerCase();
+
+    if (!currentInput || input.includes(" ")) {
+      setGhostText(null);
+      return;
+    }
+
+    const match = allCommandNames.find((cmd) =>
+      cmd.startsWith(currentInput) && cmd !== currentInput
+    );
+
+    setGhostText(match ? match.slice(input.length) : null);
+  }, [input, allCommandNames]);
 
   const commandHandlers = useMemo(
     () => createCommandHandlers({ setHistory, commandHistory }),
@@ -112,20 +129,24 @@ export const useTerminal = () => {
         return;
       }
 
-      // Ctrl+A — move cursor to start of input
+      // Ctrl+A — select all text
       if (e.ctrlKey && (e.key === "a" || e.key === "A")) {
         e.preventDefault();
-        const inputEl = e.currentTarget;
-        inputEl.setSelectionRange(0, input.length);
+        setAllSelected(true);
         return;
       }
 
-      // Ctrl+E — move cursor to end of input
-      if (e.ctrlKey && (e.key === "e" || e.key === "E")) {
+      // Backspace/Delete when all selected — clear input
+      if (allSelected && (e.key === "Backspace" || e.key === "Delete")) {
         e.preventDefault();
-        const inputEl = e.currentTarget;
-        inputEl.setSelectionRange(input.length, input.length);
+        setInput("");
+        setAllSelected(false);
         return;
+      }
+
+      // Any other key clears selection state
+      if (allSelected) {
+        setAllSelected(false);
       }
       
       if (e.key === "Enter" && !isTyping) {
@@ -155,6 +176,12 @@ export const useTerminal = () => {
         setInput("");
       } else if (e.key === "Tab") {
         e.preventDefault();
+        if (ghostText) {
+          setInput(input.trimEnd() + ghostText);
+          setGhostText(null);
+          return;
+        }
+
         const currentInput = input.trim();
         if (!currentInput) return;
 
@@ -172,6 +199,10 @@ export const useTerminal = () => {
           ];
           setHistory(newHistory);
         }
+      } else if (e.key === "ArrowRight" && ghostText) {
+        e.preventDefault();
+        setInput(input.trimEnd() + ghostText);
+        setGhostText(null);
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         const prev = navigateUp();
@@ -185,7 +216,9 @@ export const useTerminal = () => {
     [
       addCommand,
       allCommandNames,
+      allSelected,
       commandHistory,
+      ghostText,
       history,
       input,
       navigateUp,
@@ -236,6 +269,8 @@ export const useTerminal = () => {
     currentTypingOutput,
     input,
     isTyping,
+    ghostText,
+    allSelected,
     terminalRef,
     promptLine1,
     promptLine2,

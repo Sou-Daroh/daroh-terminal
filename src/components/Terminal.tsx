@@ -217,6 +217,8 @@ const TypingOutput = ({ content }: { content: string | null }) => {
 
 const TerminalInput = ({
   input,
+  ghostText,
+  allSelected,
   promptLine1,
   promptLine2,
   isTyping,
@@ -224,6 +226,8 @@ const TerminalInput = ({
   onInputKeyDown,
 }: {
   input: string;
+  ghostText: string | null;
+  allSelected: boolean;
   promptLine1: string;
   promptLine2: string;
   isTyping: boolean;
@@ -239,20 +243,29 @@ const TerminalInput = ({
         <div className="flex-shrink-0">
           <TerminalOutput html={promptLine2} />
         </div>
-        <input
-          id="terminal-input"
-          type="text"
-          value={input}
-          onChange={onInputChange}
-          onKeyDown={onInputKeyDown}
-          className="bg-transparent border-none text-green-400 focus:outline-none caret-transparent p-0"
-          autoComplete="off"
-          autoFocus
-          disabled={isTyping}
-          aria-label="Command input"
-          style={{ width: `${input.length}ch` }}
-        />
-        <span className="blinking-cursor text-green-500">█</span>
+        <span className="relative whitespace-nowrap">
+          <input
+            id="terminal-input"
+            type="text"
+            value={input}
+            onChange={onInputChange}
+            onKeyDown={onInputKeyDown}
+            className="sr-only"
+            autoComplete="off"
+            autoFocus
+            disabled={isTyping}
+            aria-label="Command input"
+          />
+          <span className={allSelected && input ? "bg-indigo-800 text-green-400" : "text-green-400"}>{input}</span>
+          {ghostText ? (
+            <span className="text-gray-600 select-none">
+              <span className="blinking-cursor text-green-500" style={{ marginRight: '-1ch' }}>█</span>
+              {ghostText}
+            </span>
+          ) : (
+            <span className="blinking-cursor text-green-500">█</span>
+          )}
+        </span>
       </div>
     </div>
   );
@@ -263,6 +276,8 @@ const Terminal = () => {
     currentTypingOutput,
     input,
     isTyping,
+    ghostText,
+    allSelected,
     terminalRef,
     promptLine1,
     promptLine2,
@@ -314,6 +329,8 @@ const Terminal = () => {
         <TypingOutput content={currentTypingOutput} />
         <TerminalInput
           input={input}
+          ghostText={ghostText}
+          allSelected={allSelected}
           promptLine1={promptLine1}
           promptLine2={promptLine2}
           isTyping={isTyping}
