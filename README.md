@@ -7,7 +7,6 @@ A sleek, terminal-inspired portfolio website that showcases my journey as a full
 ## Features
 
 - **Interactive Terminal**: Navigate my portfolio using real terminal commands — no GUI needed
-- **3D Globe Viewer**: Visualize my global experience with an interactive WebGL globe (`globe`)
 - **Real-time Status Bar**: Live date, time, and system info in the footer
 - **Fully Responsive**: Touch-friendly on mobile, full-featured on desktop
 
